@@ -45,7 +45,7 @@ if ($mode == 'post'){
 	# Blacklist
 	if (in_array($user_id, $user_id_list)){
 		$user_place = array_search($user_id, $user_id_list); 
-		if ($user_list['users'][$user_place]['blacklist'] == 1){
+		if ($user_list['users'][$user_place]['blacklist'] == "1"){
 			die("<div class='post'><h1>You're banned!</h1>You're not allowed to create new posts!</div>");
 		}
 	}
