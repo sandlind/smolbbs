@@ -40,7 +40,7 @@ if ($action == 'ban' || $action == 'unban'){
 	if (in_array($text, $user_id_list)){
 		# Ban user that already exists in user data
 		$user_place = array_search($user_id, $user_id_list); 
-		$user_list[$user_place]['blacklist'] == 1;
+		$user_list[$user_place]['blacklist'] == "1";
 		$new_user_json = json_encode($user_list, true);
 	} else {
 		# Add IP to user data for future blacklisting
