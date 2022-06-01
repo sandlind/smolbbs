@@ -1,6 +1,7 @@
 <html>
 <head>
 <style>
+
 body { background-image: url('bg.gif'); font-family: sans-serif; color: #000;}
 h1 { font-family: serif; color: #DD0000; font-size: 16pt;}
 a { color: #0000FF; text-decoration-line: underline;}
@@ -15,7 +16,6 @@ div.top { display: table; padding: 5px; margin: 15px; background:#CCFFCC; border
 
 </style>
 </head>
-</html>
 <?php
 $setting_board_name = 'smolBBS';			# Name of this textboard
 $setting_board_title = "<div class=top><center><h1>smolBBS</h1></center>This is an installation of smolBBS. Please personalize your <b>config.php</b>.</div>";	# In-line HTML that shows on top of the board
@@ -40,10 +40,4 @@ $crypt_iv_length = openssl_cipher_iv_length($crypt_cipher);
 $crypt_options = 0;  
 $crypt_iv = 'CHANGEME'; ## CHANGE THIS!!! (Should be exactly 16 bytes long, may need to be in hexadecimal (contains only 0123456789abcdef) )
 
-## SENSITIVE SETTINGS CHECKING SCRIPT
-## Feel free to REMOVE THIS PART if you've set these settings
-If (($setting_admin_pass == "CHANGEME") || ($setting_admin_key == "CHANGEME") || ($crypt_iv == "CHANGEME")){
-	die("<div class=post><h1>A FATAL MISTAKE HAS BEEN MADE!</h1>You need to go inside <b>config.php</b> and change one or more of the following settings to something valid. They currently are set to <b>CHANGEME</b>.<br><ul><li>setting_admin_pass</li><li>setting_admin_key</li><li>crypt_iv</li></ul></div>");
-	
-}
 ?>
