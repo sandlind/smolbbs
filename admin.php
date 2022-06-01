@@ -28,29 +28,31 @@ if (isset($_POST['action'])){
 if ($action == 'ban' || $action == 'unban'){
 	if ($action == 'ban'){
 		$blacklist_set = '1';
+		$blacklist_word = "banned";
 	} else {
 		$blacklist_set = '0';
+		$blacklist_word = "unbanned";
 	}
 
 	$user_json = file_get_contents("users.json");
 	$user_list = json_decode($user_json, true);
-	$user_id_list = array_column($user_list, 'id');
+	$user_id_list = array_column($user_list['users'], 'id');
 	$user_id = openssl_encrypt($text, $crypt_cipher, $setting_admin_key, $crypt_options, $crypt_iv); 
 
-	if (in_array($text, $user_id_list)){
+	if (in_array($user_id, $user_id_list)){
 		# Ban user that already exists in user data
 		$user_place = array_search($user_id, $user_id_list); 
-		$user_list[$user_place]['blacklist'] == "1";
+		$user_list['users'][$user_place]['blacklist'] = "$blacklist_set";
 		$new_user_json = json_encode($user_list, true);
 	} else {
 		# Add IP to user data for future blacklisting
-		$new_user = array("id" => $user_id, "lastpost" => time(), "blacklist" => "1");
+		$new_user = array("id" => $user_id, "lastpost" => time(), "blacklist" => "$blacklist_set");
 		array_push($user_list['users'], $new_user);
 		$new_user_json = json_encode($user_list, true);
 	}
 	# Write the ban changes out
 	file_put_contents("users.json", $new_user_json);
-	die("<div class=post><h1>IP banned</h1>The IP has been blacklisted from posting.</div>");
+	die("<div class=post><h1>IP banned</h1>The IP has been $blacklist_word.</div>");
 }
 
 #Delete post
