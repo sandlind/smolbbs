@@ -50,7 +50,7 @@ if ($action == 'ban' || $action == 'unban'){
 	}
 	# Write the ban changes out
 	file_put_contents("users.json", $new_user_json);
-	die("<div class=post><h1>IP banned/h1>The IP has been blacklisted from posting.</div>");
+	die("<div class=post><h1>IP banned</h1>The IP has been blacklisted from posting.</div>");
 }
 
 #Delete post
