@@ -26,34 +26,31 @@ if (isset($_POST['action'])){
 
 # Toggle ban for IP
 if ($action == 'ban' || $action == 'unban'){
-if ($action == 'ban'){
-	$blacklist_set = '1';
-} else {
-	$blacklist_set = '0';
-}
+	if ($action == 'ban'){
+		$blacklist_set = '1';
+	} else {
+		$blacklist_set = '0';
+	}
 
-$user_json = file_get_contents("users.json");
-$user_list = json_decode($user_json, true);
-$user_id_list = array_column($user_list, 'id');
-$user_id = openssl_encrypt($text, $crypt_cipher, $setting_admin_key, $crypt_options, $crypt_iv); 
+	$user_json = file_get_contents("users.json");
+	$user_list = json_decode($user_json, true);
+	$user_id_list = array_column($user_list, 'id');
+	$user_id = openssl_encrypt($text, $crypt_cipher, $setting_admin_key, $crypt_options, $crypt_iv); 
 
-if (in_array($text, $user_id_list)){
-	# Ban user that already exists in user data
-	$user_place = array_search($user_id, $user_id_list); 
-	$user_list[$user_place]['blacklist'] == 1;
-	$new_user_json = json_encode($user_list, true);
-	$users_file = fopen("users.json","w");
-	fwrite($users_file, $new_user_json);
-	fclose($users_file);
-	die("<div class=post><h1>IP banned/h1>The IP has been blacklisted from posting.</div>");
-} else {
-	# Add IP to user data for future blacklisting
-	$new_user = array("id" => $user_id, "lastpost" => time(), "blacklist" => "1");
-	array_push($user_list['users'], $new_user);
-	$new_user_json = json_encode($user_list, true);
+	if (in_array($text, $user_id_list)){
+		# Ban user that already exists in user data
+		$user_place = array_search($user_id, $user_id_list); 
+		$user_list[$user_place]['blacklist'] == 1;
+		$new_user_json = json_encode($user_list, true);
+	} else {
+		# Add IP to user data for future blacklisting
+		$new_user = array("id" => $user_id, "lastpost" => time(), "blacklist" => "1");
+		array_push($user_list['users'], $new_user);
+		$new_user_json = json_encode($user_list, true);
+	}
+	# Write the ban changes out
 	file_put_contents("users.json", $new_user_json);
-	die("<div class=post><h1>IP banned</h1>New user added to data.<br>The IP has been blacklisted from posting.</div>");
-}
+	die("<div class=post><h1>IP banned/h1>The IP has been blacklisted from posting.</div>");
 }
 
 #Delete post
@@ -64,9 +61,7 @@ if ($action == 'delpost'){
 	$post_place = array_search($text, $board_id_list); 
 	$board_list['posts'][$post_place]['text'] = $setting_deleted_msg;
 	$new_board_json = json_encode($board_list, true);
-	$board_file = fopen("board.json","w");
-	fwrite($board_file, $new_board_json);
-	fclose($board_file);
+	file_put_contents("board.json", $new_board_json);
 	die("<div class=post><h1>Deleted post #$text</h1>");
 }
 
